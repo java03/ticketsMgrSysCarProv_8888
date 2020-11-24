@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC 
+"-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wwj.ticketsMgrSysCarProv_8888.mapper.CarMapper">
+	<resultMap type="CarVO" id="carMap">
+		<id column="vehicle_id" property="vehicleId"/>
+		<result column="vehicle_num" property="vehicleNum"/>
+		<result column="buy_date" property="buyDate"/>
+		<result column="brand" property="brand"/>
+		<result column="model" property="model"/>
+		<result column="max_carry" property="maxCarry"/>
+		<result column="displacement" property="displacement"/>
+		<result column="engine_number" property="engineNumber"/>
+		<result column="del_mark" property="delMark"/>
+	</resultMap>
+	<!-- 查询所有车辆信息 -->
+	<select id="getCars" resultMap="carMap" parameterType="map">
+		select vehicle_id,vehicle_num,buy_date,brand,model,
+			max_carry,displacement,engine_number
+		from carimg where del_mark=0
+	</select>
+	<!-- 查询指定车辆编号信息 -->
+	<select id="getCarById" resultMap="carMap" parameterType="_int">
+		select vehicle_id,vehicle_num,buy_date,brand,model,
+			max_carry,displacement,engine_number
+		from carimg  where vehicle_id=#{vehicleId} and del_mark=0
+	</select>
+	<!-- 添加车辆 -->
+	<insert id="addCar" parameterType="CarVO">
+		insert into carimg(vehicle_num,buy_date,brand,model,
+			max_carry,displacement,engine_number)
+			values(#{vehicleNum},#{buyDate},#{brand},#{model},#{maxCarry},#{displacement},#{engineNumber})
+	</insert>
+	<!-- 修改车辆 -->
+	<update id="modifyCar" parameterType="CarVO">
+		update carimg set 
+			vehicle_num=#{vehicleNum},
+			buy_date=#{buyDate},
+			brand=#{brand},
+			model=#{model},
+			max_carry=#{maxCarry},
+			displacement=#{displacement},
+			engine_number=#{engineNumber}
+			where vehicle_id=#{vehicleId}
+	</update>
+	<!-- 删除车辆 -->
+	<update id="deleteCarById" parameterType="_int" >
+		update carimg set del_mark=1  where vehicle_id=#{vehicleId}
+	</update>
+</mapper>
